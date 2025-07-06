@@ -1,0 +1,22 @@
+services:
+  api:
+    image: sgds_api_backend
+    build: 
+      context: .
+      dockerfile: src/SGDS.API/Dockerfile
+    container_name: sgds_api
+    ports:
+      - "5000:8080"
+    # environment:
+    #   ASPNETCORE_ENVIRONMENT: Development
+    #   CONNECTIONSTRINGS__DEFAULTCONNECTION: Server=db;Database=RedactedProjectName;User Id=sa;Password=YourStrong@Passw0rd;
+    #depends_on:
+    #  - db
+  web:
+    image: sgds_web_frontend  
+    build:
+      context: .
+      dockerfile: src/web/Dockerfile
+    container_name: sgds_web
+    ports:
+      - "3000:59171"
