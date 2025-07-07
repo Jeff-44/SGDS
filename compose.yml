@@ -1,4 +1,15 @@
 services:
+  db:
+    image: postgres:latest
+    container_name: sgds_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: SGDS_DB
+    #volumes:
+      #- db_data:/var/lib/postgresql/data    
   api:
     image: sgds_api_backend
     build: 
@@ -7,11 +18,16 @@ services:
     container_name: sgds_api
     ports:
       - "5000:8080"
-    # environment:
-    #   ASPNETCORE_ENVIRONMENT: Development
-    #   CONNECTIONSTRINGS__DEFAULTCONNECTION: Server=db;Database=RedactedProjectName;User Id=sa;Password=YourStrong@Passw0rd;
-    #depends_on:
-    #  - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      CONNECTIONSTRINGS__DEFAULTCONNECTION: >
+        Host=localhost;
+        Port=5432;
+        Database=SGDS_DB;
+        Username=postgres;
+        Password=postgres;
+    depends_on:
+      - db
   web:
     image: sgds_web_frontend  
     build:
@@ -20,3 +36,5 @@ services:
     container_name: sgds_web
     ports:
       - "3000:59171"
+    # depends_on:
+    #   - api
